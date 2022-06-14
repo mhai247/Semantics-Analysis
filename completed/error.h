@@ -1,4 +1,4 @@
-/* 
+/*
  * @copyright (c) 2008, Hedspi, Hanoi University of Technology
  * @author Huu-Duc Nguyen
  * @version 1.0
@@ -8,10 +8,13 @@
 #define __ERROR_H__
 #include "token.h"
 
-typedef enum {
+typedef enum
+{
   ERR_END_OF_COMMENT,
   ERR_IDENT_TOO_LONG,
+  ERR_STRING_TOO_LONG,
   ERR_INVALID_CONSTANT_CHAR,
+  ERR_INVALID_CONSTANT_DOUBLE,
   ERR_INVALID_SYMBOL,
   ERR_INVALID_IDENT,
   ERR_INVALID_CONSTANT,

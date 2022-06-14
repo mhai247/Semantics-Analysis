@@ -39,7 +39,6 @@ void eat(TokenType tokenType)
 
 void compileProgram(void)
 {
-
   eat(KW_PROGRAM);
   eat(TK_IDENT);
 
@@ -421,6 +420,7 @@ void compileStatements(void)
 
 void compileStatement(void)
 {
+  // printf("%s\n", tokenToString(lookAhead->tokenType));
   switch (lookAhead->tokenType)
   {
   case TK_IDENT:
@@ -435,6 +435,9 @@ void compileStatement(void)
   case KW_IF:
     compileIfSt();
     break;
+  case KW_SWITCH:
+    compileSwitchSt();
+    break;
   case KW_WHILE:
     compileWhileSt();
     break;
@@ -442,11 +445,15 @@ void compileStatement(void)
     compileForSt();
     break;
     // EmptySt needs to check FOLLOW tokens
+  case KW_BREAK:
+    eat(KW_BREAK);
   case SB_SEMICOLON:
   case KW_END:
   case KW_ELSE:
+  case KW_CASE:
+  case KW_DEFAULT:
     break;
-    // Error occurs
+  // Error occurs
   default:
     error(ERR_INVALID_STATEMENT, lookAhead->lineNo, lookAhead->colNo);
     break;
@@ -494,6 +501,49 @@ void compileElseSt(void)
 {
   eat(KW_ELSE);
   compileStatement();
+}
+
+void compileSwitchSt(void)
+{
+  eat(KW_SWITCH);
+  compileExpression();
+
+  eat(KW_BEGIN);
+  compileCaseSt();
+  compileDefaultSt();
+  printf("%s\n", tokenToString(lookAhead->tokenType));
+  eat(KW_END);
+  eat(SB_SEMICOLON);
+}
+
+void compileCaseSt(void)
+{
+  eat(KW_CASE);
+  compileConstant();
+  eat(SB_COLON);
+  compileStatements();
+  compileCaseSts();
+}
+
+void compileCaseSts(void)
+{
+  while (lookAhead->tokenType == KW_CASE)
+  {
+    eat(KW_CASE);
+    compileConstant();
+    eat(SB_COLON);
+    compileStatements();
+  }
+}
+
+void compileDefaultSt(void)
+{
+  if (lookAhead->tokenType == KW_DEFAULT)
+  {
+    eat(KW_DEFAULT);
+    eat(SB_COLON);
+    compileStatements();
+  }
 }
 
 void compileWhileSt(void)
@@ -646,6 +696,7 @@ void compileExpression3(void)
   case KW_END:
   case KW_ELSE:
   case KW_THEN:
+  case KW_BEGIN:
     break;
   default:
     error(ERR_INVALID_EXPRESSION, lookAhead->lineNo, lookAhead->colNo);
@@ -667,6 +718,13 @@ void compileTerm2(void)
     compileFactor();
     compileTerm2();
     break;
+
+  case SB_EXP:
+    eat(SB_EXP);
+    compileFactor();
+    compileTerm2();
+    break;
+
   case SB_SLASH:
     eat(SB_SLASH);
     compileFactor();
@@ -690,6 +748,7 @@ void compileTerm2(void)
   case KW_END:
   case KW_ELSE:
   case KW_THEN:
+  case KW_BEGIN:
     break;
   default:
     error(ERR_INVALID_TERM, lookAhead->lineNo, lookAhead->colNo);

@@ -1,0 +1,38 @@
+Program Bai2;
+    Var diem : Integer;
+
+    Function F(diem : Integer) : Char;
+    Begin
+        SWITCH diem
+        BEGIN
+            CASE 0:
+            CASE 1:
+            CASE 2:
+            CASE 3:
+                F := 'F';
+                BREAK;
+            
+            CASE 4:
+            CASE 5:
+                F := 'D';
+                BREAK;
+            CASE 6:
+                F := 'C';
+                BREAK;
+            CASE 7:
+            CASE 8:
+                F := 'B';
+                BREAK;
+            CASE 9:
+            CASE 10:
+                F := 'A';
+                BREAK;
+            DEFAULT:
+                F := 'E';
+                BREAK;
+        END;
+    END;
+BEGIN
+    diem := READI;
+    CALL WRITEC(F(diem));
+END.

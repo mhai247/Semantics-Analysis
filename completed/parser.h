@@ -1,4 +1,4 @@
-/* 
+/*
  * @copyright (c) 2008, Hedspi, Hanoi University of Technology
  * @author Huu-Duc Nguyen
  * @version 1.0
@@ -26,11 +26,11 @@ void compileVarDecl(void);
 void compileSubDecls(void);
 void compileFuncDecl(void);
 void compileProcDecl(void);
-ConstantValue* compileUnsignedConstant(void);
-ConstantValue* compileConstant(void);
-ConstantValue* compileConstant2(void);
-Type* compileType(void);
-Type* compileBasicType(void);
+ConstantValue *compileUnsignedConstant(void);
+ConstantValue *compileConstant(void);
+ConstantValue *compileConstant2(void);
+Type *compileType(void);
+Type *compileBasicType(void);
 void compileParams(void);
 void compileParam(void);
 void compileStatements(void);
@@ -53,6 +53,10 @@ void compileTerm(void);
 void compileTerm2(void);
 void compileFactor(void);
 void compileIndexes(void);
+void compileSwitchSt();
+void compileCaseSt(void);
+void compileCaseSts(void);
+void compileDefaultSt(void);
 
 int compile(char *fileName);
 
